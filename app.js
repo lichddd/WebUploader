@@ -27,7 +27,7 @@ app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'uploadfiles')));
 
 //fs.rename(tmp_path,new_path,function(err){
 //  if(err){

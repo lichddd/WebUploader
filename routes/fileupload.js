@@ -6,6 +6,24 @@ var sss = require("./filesave");
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+router.post('/list', function(req, res, next) {
+  var new_path = "./uploadfiles/";
+  fs.readdir(new_path, function (err,files) {
+
+    if (err)
+
+    {
+      res.json([]);
+    }
+    else
+
+    {
+      res.json(files);
+    }
+
+  });
+
+});
 router.post('/', function(req, res, next) {
   //console.log(req.files);
   var obj = req.files.file;

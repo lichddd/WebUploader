@@ -582,6 +582,28 @@
 
         $upload.addClass( 'state-' + state );
         updateTotalProgress();
+
+
+
+        $.ajax({
+            url: "fileupload/list",
+            aync: false,
+            dataType: "json",
+            type: "post",
+            success: function(data) {
+
+                data.forEach(function (obj,index) {
+                    var style="width: 120px;height: 60px;background-image: url("+obj+");background-size: contain;background-repeat: no-repeat;float: left;";
+                    $('body').append('<div style="'+style+'"></div>');
+                })
+
+                console.log(data);
+            }
+
+        });
+
+
+
     });
 
 })( jQuery );
