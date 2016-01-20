@@ -16,17 +16,30 @@ router.post('/', function(req, res, next) {
   var is = fs.createReadStream(tmp_path);
   var os = fs.createWriteStream(new_path);
 
-  util.pump(is, os, function(a) {
-    fs.unlinkSync(tmp_path);
-    if (a)
-    {
-      res.sendStatus(404);
-    }
-    else
-    {
-      res.json({"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"});
-    }
 
+  is.on("end", function () {
+    res.json({"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"});
+  })
+
+  var domain = require('domain');
+
+  function save() {
+    is.pipe(os);
+
+  }
+
+  var d = domain.create();
+  d.on('error',function(err){
+    res.sendStatus(404);
+    console.log(err);
   });
+
+  d.add(is);
+  d.add(os);
+  d.run(save);
+
+
+
+
 });
 module.exports = router;
