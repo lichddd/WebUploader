@@ -11,26 +11,22 @@ router.post('/', function(req, res, next) {
   var obj = req.files.file;
   var tmp_path = obj.path;
   var new_path = "./uploadfiles/"+obj.name;
-  fs.rename(tmp_path,new_path,function(err){
-    if(err){
-      console.log(err);
+  util = require('util');
+
+  var is = fs.createReadStream(tmp_path);
+  var os = fs.createWriteStream(new_path);
+
+  util.pump(is, os, function(a) {
+    fs.unlinkSync(tmp_path);
+    if (a)
+    {
+      res.sendStatus(404);
     }
     else
     {
-      setTimeout(function () {
-        res.send('respond with a resource');
-      },0);
-
+      res.json({"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"});
     }
 
-
-
   });
-
-  fs.renameSync(tmp_path,new_path);
-  //res.sendStatus(404)
-  res.json({"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"});
-
-
 });
 module.exports = router;
