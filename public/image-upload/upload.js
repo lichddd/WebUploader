@@ -309,6 +309,10 @@
                     $prgress.css('display', 'block');
                 } else if ( cur === 'complete' ) {
                     $li.append( '<span class="success"></span>' );
+                    var style="width: 120px;height: 60px;background-image: url("+file.name+");background-size: contain;background-repeat: no-repeat;float: left;";
+                    $('body').append('<div style="'+style+'"></div>');
+
+
                 }
 
                 $li.removeClass( 'state-' + prev ).addClass( 'state-' + cur );
